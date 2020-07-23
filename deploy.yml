@@ -83,13 +83,11 @@
 
     - name: Wait for instances to respond to ssh
       wait_for:
-        host: "{{ item.public_ip_address }}"
+        host: "{{ item.public_v4 }}"
         port: 22
         search_regex: OpenSSH
         delay: 5
-      loop: "{{ ec2.instances }}"
-      loop_control:
-        label: "{{ item.tags.Name }}"
+      loop: "{{ openstack_instances.openstack_servers }}"
 
 - hosts: psi_instances
   user: cloud-user
