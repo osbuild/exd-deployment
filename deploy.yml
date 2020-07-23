@@ -7,7 +7,7 @@
     floating_ip:
       address: 10.0.111.64
       id: 59a56a29-14d8-424d-94ec-fef69c8287d7
-    image_id: 7bb8b994-d7e8-4a77-b28a-84aad5dc0b26
+    image_id: b4d5fa2e-d30a-4589-8fda-ba8364e32d3c
     network: ee7dcdfe-2b6e-4b7e-bbe9-3dabc0972bb5
     server_name: osbuild-continuous-deployment
   tasks:
