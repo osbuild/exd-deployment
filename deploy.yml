@@ -37,7 +37,7 @@
       os_server:
         name: "{{ server_name }}"
         image: "{{ image_id }}"
-        key_name: deploy
+        key_name: jenkins
         timeout: 300
         flavor: "{{ flavor_name }}"
         network: "{{ network }}"
@@ -88,6 +88,8 @@
         search_regex: OpenSSH
         delay: 5
       loop: "{{ openstack_instances.openstack_servers }}"
+      loop_control:
+        label: "{{ item.name }}"
 
 - hosts: psi_instances
   user: cloud-user
