@@ -18,5 +18,8 @@ chmod 0600 ~/.ssh/id_rsa
 chmod 0700 ~/.ssh/
 file ~/.ssh/id_rsa
 
+ip addr
+sleep 3600
+
 # Run the deployment.
 ansible-playbook -i localhost, deploy.yml
