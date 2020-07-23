@@ -8,6 +8,8 @@
       address: 10.0.111.64
       id: 59a56a29-14d8-424d-94ec-fef69c8287d7
     image_id: 7bb8b994-d7e8-4a77-b28a-84aad5dc0b26
+    network: ee7dcdfe-2b6e-4b7e-bbe9-3dabc0972bb5
+    server_name: osbuild-continuous-deployment
   tasks:
 
     - name: Authenticate to our OpenStack cloud
@@ -30,3 +32,66 @@
     - name: Print floating IP details
       debug:
         var: ip_data.stdout | from_json
+
+    - name: Launch instances
+      os_server:
+        name: "{{ server_name }}"
+        image: "{{ image_id }}"
+        key_name: deploy
+        timeout: 300
+        flavor: "{{ flavor_name }}"
+        network: "{{ network }}"
+        auto_ip: yes
+        wait: no
+        state: present
+      async: 600
+      poll: 0
+      register: async_result
+
+    - name: Wait for builds to finish
+      async_status:
+        jid: "{{ async_result.ansible_job_id }}"
+      register: async_poll_result
+      until: async_poll_result.finished
+      retries: 100
+
+    - name: Wait for instances to be active
+      os_server_info:
+        cloud: psi
+        server: "{{ server_name }}"
+        detailed: no
+        filters:
+          status: ACTIVE
+      register: openstack_instances
+      until:
+        - openstack_instances.openstack_servers | length == 1
+      retries: 60
+      delay: 15
+
+    - name: Add hosts to inventory
+      add_host:
+        group: psi_instances
+        name: "{{ item.name }}"
+        hostname: "{{ item.name }}"
+        ansible_hostname: "{{ item.name }}"
+        ansible_host: "{{ item.public_v4 }}"
+        rhn_registration_username: "{{ ansible_env.RHN_REGISTRATION_USR }}"
+        rhn_registration_password: "{{ ansible_env.RHN_REGISTRATION_PSW }}"
+      loop: "{{ openstack_instances.openstack_servers }}"
+      loop_control:
+        label: "{{ item.name }}"
+
+    - name: Wait for instances to respond to ssh
+      wait_for:
+        host: "{{ item.public_ip_address }}"
+        port: 22
+        search_regex: OpenSSH
+        delay: 5
+      loop: "{{ ec2.instances }}"
+      loop_control:
+        label: "{{ item.tags.Name }}"
+
+- hosts: psi_instances
+  user: cloud-user
+  roles:
+    - common

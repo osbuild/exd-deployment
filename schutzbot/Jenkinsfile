@@ -39,9 +39,10 @@ pipeline {
         stage("Deploy 🚀") {
             agent { label "f31cloudbase || f32cloudbase" }
             environment {
-                SSH_CREDS = credentials("fedora-ssh-key")
                 OPENSTACK_CREDS = credentials("psi-openstack-clouds-yaml")
                 OS_CLOUD = "psi"
+                RHN_REGISTRATION = credentials("mhayden-staging-subscription-creds")
+                SSH_CREDS = credentials("fedora-ssh-key")
             }
             steps {
                 sh (
