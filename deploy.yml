@@ -8,7 +8,7 @@
     - name: Authenticate to OpenStack cloud
       os_auth:
         cloud: "{{ cloud_name }}"
-      registe: auth_result
+      register: auth_result
 
     - name: Verify service catalog
       debug:

@@ -43,12 +43,8 @@ pipeline {
             }
             steps {
                 sh (
-                    label: "Install Ansible",
-                    script: "sudo dnf -y install ansible"
-                )
-                sh (
                     label: "Deploy",
-                    script: "ansible-playbook -i localhost, deploy.yml"
+                    script: "schutzbot/deploy.sh"
                 )
             }
         }
