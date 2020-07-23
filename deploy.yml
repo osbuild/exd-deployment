@@ -1,0 +1,15 @@
+---
+
+- hosts: localhost
+  vars:
+    cloud_name: psi
+  tasks:
+
+    - name: Authenticate to OpenStack cloud
+      os_auth:
+        cloud: "{{ cloud_name }}"
+      registe: auth_result
+
+    - name: Verify service catalog
+      debug:
+        var: auth_result.service_catalog
