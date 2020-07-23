@@ -3,14 +3,19 @@
 - hosts: localhost
   vars:
     ansible_connection: local
-    cloud_name: psi
+    flavor_name: ci.m1.medium
+    image_id: 7bb8b994-d7e8-4a77-b28a-84aad5dc0b26
   tasks:
 
-    - name: Authenticate to OpenStack cloud
+    - name: Authenticate to our OpenStack cloud
       os_auth:
-        cloud: "{{ cloud_name }}"
       register: auth_result
 
-    - name: Verify service catalog
+    - name: Verify that the base image exists
+      os_image_info:
+        image: "{{ image_id }}"
+      register: image_data
+
+    - name: Print image details
       debug:
-        var: auth_result.service_catalog
+        var: image_data

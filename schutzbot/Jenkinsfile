@@ -40,6 +40,7 @@ pipeline {
             agent { label "f31cloudbase || f32cloudbase" }
             environment {
                 OPENSTACK_CREDS = credentials("psi-openstack-clouds-yaml")
+                OS_CLOUD = "psi"
             }
             steps {
                 sh (
