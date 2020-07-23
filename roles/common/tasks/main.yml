@@ -7,7 +7,9 @@
         --password={{ rhn_registration_password }} \
         --serverurl=subscription.rhsm.stage.redhat.com \
         --baseurl=cdn.stage.redhat.com \
-        --release=8.2
+        --release=8.2 \
+        --auto-attach \
+        --force
   register: rhn_registration
   until: rhn_registration is success
   retries: 5
