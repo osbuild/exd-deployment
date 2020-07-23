@@ -11,5 +11,12 @@ sudo dnf -qy install ansible python3-openstackclient
 mkdir -p ~/.config/openstack
 cp $OPENSTACK_CREDS ~/.config/openstack/clouds.yaml
 
+# Move the ssh key into place.
+mkdir -p ~/.ssh/
+echo $SSH_CREDS | tee ~/.ssh/id_rsa
+chmod 0600 ~/.ssh/id_rsa
+chmod 0700 ~/.ssh/
+file ~/.ssh/id_rsa
+
 # Run the deployment.
 ansible-playbook -i localhost, deploy.yml
