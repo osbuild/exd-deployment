@@ -93,5 +93,6 @@
 
 - hosts: psi_instances
   user: cloud-user
+  become: yes
   roles:
     - common
