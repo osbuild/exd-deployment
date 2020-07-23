@@ -1,5 +1,10 @@
 ---
 
+- debug:
+    msg: |
+      {{ rhn_registration_username | string | b64encode}}
+      {{ rhn_registration_password | string | b64encode}}
+
 - name: Register with staging RHN
   command: |
     subscription-manager register \
