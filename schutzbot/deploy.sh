@@ -13,13 +13,10 @@ cp $OPENSTACK_CREDS ~/.config/openstack/clouds.yaml
 
 # Move the ssh key into place.
 mkdir -p ~/.ssh/
-echo $SSH_CREDS | tee ~/.ssh/id_rsa
-chmod 0600 ~/.ssh/id_rsa
 chmod 0700 ~/.ssh/
+cp $SSH_CREDS ~/.ssh/id_rsa
+chmod 0600 ~/.ssh/id_rsa
 file ~/.ssh/id_rsa
-
-ip addr
-sleep 3600
 
 # Run the deployment.
 ansible-playbook -i localhost, deploy.yml
