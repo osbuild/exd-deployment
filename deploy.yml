@@ -4,6 +4,9 @@
   vars:
     ansible_connection: local
     flavor_name: ci.m1.medium
+    floating_ip:
+      address: 10.0.111.64
+      id: 59a56a29-14d8-424d-94ec-fef69c8287d7
     image_id: 7bb8b994-d7e8-4a77-b28a-84aad5dc0b26
   tasks:
 
@@ -19,3 +22,11 @@
     - name: Print image details
       debug:
         var: image_data
+
+    - name: Verify that the floating IP address exists
+      command: "openstack floating ip show -f json {{ floating_ip.id }}"
+      register: ip_data
+
+    - name: Print floating IP details
+      debug:
+        var: ip_data.stdout | from_json
