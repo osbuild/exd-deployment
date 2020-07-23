@@ -10,6 +10,10 @@
     image_id: 7bb8b994-d7e8-4a77-b28a-84aad5dc0b26
   tasks:
 
+    - name: Dump environment variables
+      debug:
+        var: ansible_env
+
     - name: Authenticate to our OpenStack cloud
       os_auth:
       register: auth_result
