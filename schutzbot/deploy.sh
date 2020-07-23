@@ -5,7 +5,7 @@ set -euxo pipefail
 echo "fastestmirror=1" | sudo tee -a /etc/dnf/dnf.conf
 
 # Install required packages.
-sudo dnf -y install ansible
+sudo dnf -y install ansible python3-openstackclient
 
 # Prepare the OpenStack login credentials.
 mkdir -p ~/.config/openstack
