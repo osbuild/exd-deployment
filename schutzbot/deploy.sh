@@ -19,4 +19,4 @@ chmod 0600 ~/.ssh/id_rsa
 file ~/.ssh/id_rsa
 
 # Run the deployment.
-ansible-playbook -i localhost, deploy.yml
+ansible-playbook -vv -i localhost, deploy.yml
