@@ -7,22 +7,19 @@
         --password={{ rhn_registration_password }} \
         --serverurl=subscription.rhsm.stage.redhat.com \
         --baseurl=cdn.stage.redhat.com \
-        --release=8.2 \
-        --auto-attach \
-        --force
+        --release=8.3
   register: rhn_registration
   until: rhn_registration is success
   retries: 5
   delay: 10
 
+- name: Specify pool to attach
+  command: subscription-manager attach --pool=8a99f9ae7325c85b01732aacdbd1027f
+
 - name: Add Code Ready Builder repository
   command: |
     subscription-manager repos \
-    --enable=codeready-builder-for-rhel-8-x86_64-rpms
-  register: add_repo
-  until: add_repo is success
-  retries: 5
-  delay: 10
+    --enable=codeready-builder-beta-for-rhel-8-x86_64-rpms
 
 - name: Ensure instance is fully updated
   dnf:
