@@ -44,7 +44,7 @@ pipeline {
             steps {
                 sh (
                     label: "Install Ansible",
-                    script: "dnf -y install ansible"
+                    script: "sudo dnf -y install ansible"
                 )
                 sh (
                     label: "Deploy",
