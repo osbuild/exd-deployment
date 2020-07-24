@@ -5,11 +5,11 @@
     ansible_connection: local
     flavor_name: ci.m1.medium
     floating_ip:
-      address: 10.0.111.64
-      id: 59a56a29-14d8-424d-94ec-fef69c8287d7
+      address: 10.0.111.238
+      id: 14c07e96-8635-4cfe-9768-f7297436538e
     image_id: b4d5fa2e-d30a-4589-8fda-ba8364e32d3c
-    network: ee7dcdfe-2b6e-4b7e-bbe9-3dabc0972bb5
-    server_name: osbuild-continuous-deployment
+    network: 316eeb47-1498-46b4-b39e-00ddf73bd2a5
+    server_name: "osbuild-continuous-deployment"
   tasks:
 
     - name: Authenticate to our OpenStack cloud
@@ -90,6 +90,13 @@
       loop: "{{ openstack_instances.openstack_servers }}"
       loop_control:
         label: "{{ item.name }}"
+
+    - name: Associate the floating IP with the instance
+      os_floating_ip:
+        server: "{{ server_name }}"
+        floating_ip_address: "{{ floating_ip.address }}"
+        state: present
+        wait: yes
 
 - hosts: psi_instances
   user: cloud-user
