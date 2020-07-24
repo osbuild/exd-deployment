@@ -94,3 +94,4 @@
   become: yes
   roles:
     - common
+    - imagebuilder
