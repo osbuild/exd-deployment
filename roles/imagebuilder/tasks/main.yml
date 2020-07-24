@@ -3,6 +3,7 @@
 - name: Deploy the osbuild repository
   yum_repository:
     name: osbuild-mock
+    description: osbuild repository
     baseurl: http://osbuild-composer-repos.s3-website.us-east-2.amazonaws.com/osbuild/osbuild-composer/master/5ab8b59/rhel83_x86_64
     enabled: yes
     gpgcheck: no
