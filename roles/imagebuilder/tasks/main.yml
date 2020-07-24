@@ -16,3 +16,17 @@
       - composer-cli
       - osbuild
       - osbuild-composer
+
+- name: Start services
+  systemd:
+    name:
+      - osbuild-composer.socket
+      - cockpit.socket
+    state: started
+    enabled: yes
+
+- name: Check API status
+  command: "{{ item }}"
+  loop:
+    - composer-cli status show
+    - composer-cli sources list
