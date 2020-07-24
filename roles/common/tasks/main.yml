@@ -28,8 +28,11 @@
 
 - name: Install required packages
   dnf:
-    packages:
+    name:
       - chrony
+      - tmux
+      - vim
+    state: present
 
 - name: Use internal time server
   lineinfile:
@@ -46,3 +49,18 @@
     enabled: yes
   loop:
     - chronyd
+
+- name: Download the team's ssh keys
+  uri:
+    url: https://raw.githubusercontent.com/osbuild/osbuild-composer/master/schutzbot/team_ssh_keys.txt
+    return_content: yes
+  register: ssh_keys
+  until: ssh_keys is success
+  retries: 5
+  delay: 5
+
+- name: Deploy ssh keys
+  authorized_key:
+    user: "{{ deployment_ssh_user }}"
+    state: present
+    key: "{{ ssh_keys.content }}"

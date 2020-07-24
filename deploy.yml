@@ -14,6 +14,8 @@
     server_name: "osbuild-continuous-deployment"
     # Add the node to the load balancer pool after deployment.
     loadbalancer_pool: 8d8058a5-0fdd-422c-b309-d7cd43847cf5
+    # User account in the image.
+    deployment_ssh_user: cloud-user
   tasks:
 
     - name: Authenticate to our OpenStack cloud
@@ -88,7 +90,7 @@
         label: "{{ item.name }}"
 
 - hosts: psi_instances
-  user: cloud-user
+  user: "{{ deployment_ssh_user }}"
   become: yes
   roles:
     - common
