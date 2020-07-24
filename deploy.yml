@@ -2,14 +2,18 @@
 
 - hosts: localhost
   vars:
+    # Use a local connection to talk to the local host.
     ansible_connection: local
+    # Size of the instance to deploy.
     flavor_name: ci.m1.medium
-    floating_ip:
-      address: 10.0.111.238
-      id: 14c07e96-8635-4cfe-9768-f7297436538e
+    # Image to deploy.
     image_id: b4d5fa2e-d30a-4589-8fda-ba8364e32d3c
+    # Network to attach to the deployed instance.
     network: 316eeb47-1498-46b4-b39e-00ddf73bd2a5
+    # Name for the server to be deployed.
     server_name: "osbuild-continuous-deployment"
+    # Add the node to the load balancer pool after deployment.
+    loadbalancer_pool: 8d8058a5-0fdd-422c-b309-d7cd43847cf5
   tasks:
 
     - name: Authenticate to our OpenStack cloud
@@ -90,13 +94,6 @@
       loop: "{{ openstack_instances.openstack_servers }}"
       loop_control:
         label: "{{ item.name }}"
-
-    - name: Associate the floating IP with the instance
-      os_floating_ip:
-        server: "{{ server_name }}"
-        floating_ip_address: "{{ floating_ip.address }}"
-        state: present
-        wait: yes
 
 - hosts: psi_instances
   user: cloud-user

@@ -25,3 +25,24 @@
   dnf:
     name: "*"
     state: latest
+
+- name: Install required packages
+  dnf:
+    packages:
+      - chrony
+
+- name: Use internal time server
+  lineinfile:
+    path: /etc/chrony.conf
+    line: "pool clock.corp.redhat.com iburst"
+    regexp: "^pool"
+  notify:
+    - Restart chronyd
+
+- name: Ensure services are running
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop:
+    - chronyd
