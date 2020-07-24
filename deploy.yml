@@ -73,6 +73,7 @@
         hostname: "{{ item.name }}"
         ansible_hostname: "{{ item.name }}"
         ansible_host: "{{ item.public_v4 }}"
+        ansible_ssh_user: "{{ deployment_ssh_user }}"
         rhn_registration_username: "{{ ansible_env.RHN_REGISTRATION_USR }}"
         rhn_registration_password: "{{ ansible_env.RHN_REGISTRATION_PSW }}"
       loop: "{{ openstack_instances.openstack_servers }}"
@@ -90,7 +91,6 @@
         label: "{{ item.name }}"
 
 - hosts: psi_instances
-  user: "{{ deployment_ssh_user }}"
   become: yes
   roles:
     - common
