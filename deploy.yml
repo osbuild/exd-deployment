@@ -29,14 +29,6 @@
       debug:
         var: image_data
 
-    - name: Verify that the floating IP address exists
-      command: "openstack floating ip show -f json {{ floating_ip.id }}"
-      register: ip_data
-
-    - name: Print floating IP details
-      debug:
-        var: ip_data.stdout | from_json
-
     - name: Launch instances
       os_server:
         name: "{{ server_name }}"
